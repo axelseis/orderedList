@@ -18,7 +18,7 @@ cors_proxy.createServer({
         Authorization: 'Basic ' + btoa('VnklkBJ3BepTAADWQlq4%2f3ktKFWUSlWxsnpG4DlUVVGKomlxlrVUaQ%3d%3d:')
     }
 }).listen(corsproxyPort, 'localhost', function() {
-    console.log('Running CORS Anywhere on :' + port);
+    console.log('Running CORS Anywhere on :' + corsproxyPort);
 });
 
 if(env === 'dev') {
@@ -46,11 +46,39 @@ else {
 
 app.listen(port, () => console.log('aXplain server listening on port ' + port ));
 
-app.get('/api/getUsers', async function(req, res) {
-    const response = await fetch(`http://localhost:${corsproxyPort}/https://woffu-dev.azurewebsites.net/api/v1/users`);
-    const json = await response.json();
-
-    res.json(json);
+app.post('/api/getUsers', async function(req, res) {
+    //console.log('req', req.body)
+    try {
+        const response = await fetch(`http://localhost:${corsproxyPort}/https://woffu-dev.azurewebsites.net/api/v1/users`);
+        const json = await response.json();
+        const filter = [
+            'ImageURL',
+            'Acronym',
+            'FirstName',
+            'LastName',
+            'JobTitleId',
+            'DepartmentId',
+            'UserKey',
+            'UsedDays',
+            'AvailableDays',
+            'EmployeeStartDate'
+        ];
+        
+        const filtered = json.map(element => {
+            const elementFiltered = filter.reduce((newElement,key) => {
+                newElement[key] = element[key];
+                return newElement;
+            },{});
+            
+            return elementFiltered;
+        },[])
+        console.log('filtered', filtered)
+        
+        res.json(filtered);
+    } 
+    catch (error) {
+        console.log('error', error)
+    }
 })
 
 app.get('*', function(req,res){
