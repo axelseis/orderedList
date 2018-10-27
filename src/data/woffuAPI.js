@@ -3,7 +3,21 @@ import { isFunction } from '../lib/utils.js';
 const apiServer = '/api';
 
 export function getUsersJSON() {
-    return _get(`${apiServer}/getUsers`);
+    return _post(`${apiServer}/getUsers`,{
+        filter: [
+            'UserId',
+            'ImageURL',
+            'Acronym',
+            'FirstName',
+            'LastName',
+            'JobTitleId',
+            'DepartmentId',
+            'UserKey',
+            'UsedDays',
+            'AvailableDays',
+            'EmployeeStartDate'
+        ]    
+    });
 }
 
 function _get(url, config) {
@@ -12,6 +26,18 @@ function _get(url, config) {
     }
     return _gpFetch(url, config);
 };
+
+function _post(url,params) {
+    const config = {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    }
+    return _gpFetch(url,config);
+}
 
 function _gpFetch(url, config) {
     return fetch(url, config)

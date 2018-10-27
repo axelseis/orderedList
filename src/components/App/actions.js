@@ -19,7 +19,7 @@ export const reducers = {
 function setUsers(state, payload) {
     return ({
         ...state,
-        users: {...payload}
+        users: [...payload]
     })
 }
 

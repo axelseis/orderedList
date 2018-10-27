@@ -5,7 +5,9 @@ import { initRouter } from '../../lib/router.js';
 import "../../lib/logger.js";
 
 import {initialState} from '../../initialState.js';
+
 import Header from '../Header/Header.js';
+import Team from '../Team/Team.js';
 
 import { getUsers, reducers } from './actions.js';
 
@@ -17,7 +19,7 @@ const routes = [
 
 export default class App extends Component {
     constructor(className) {
-        super(className, [Header]);
+        super(className, [Header,Team]);
         this.initApp();
     }
     
@@ -30,12 +32,13 @@ export default class App extends Component {
 
     stateToprops(state){
         return ({ 
-         })
+        })
     }
 
     render() {
         return(`
             <Header class="Header"></Header>
+            <Team class="Team"></Team>
         `)
     }
 }

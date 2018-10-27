@@ -1,7 +1,7 @@
 
 export const initialState = {
-    images: [],
-    perpage:100,
-    page:0
+    users: [],
+    perpage:15,
+    page:1
 };
 

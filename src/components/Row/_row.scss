@@ -1,16 +1,9 @@
-.Header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 20;
+.Row {
+    position: relative;
     width: 100%;
     height: 60px;
     background-color: #2D80E2;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    &__logo {
-        width: 150px;
-    }
 }

@@ -1,6 +1,7 @@
 const path = require('path');
 const fetch = require('node-fetch');
 const express = require('express');
+const bodyParser = require("body-parser");
 const btoa = require('btoa');
 const cors_proxy = require('cors-anywhere');
 
@@ -18,7 +19,7 @@ cors_proxy.createServer({
         Authorization: 'Basic ' + btoa('VnklkBJ3BepTAADWQlq4%2f3ktKFWUSlWxsnpG4DlUVVGKomlxlrVUaQ%3d%3d:')
     }
 }).listen(corsproxyPort, 'localhost', function() {
-    console.log('Running CORS Anywhere on :' + corsproxyPort);
+    console.log('Running CORS Anywhere on port ' + corsproxyPort);
 });
 
 if(env === 'dev') {
@@ -31,7 +32,10 @@ if(env === 'dev') {
         next();
     });
 
-    var lrserver = livereload.createServer();
+    const lrserver = livereload.createServer({
+        delay: 500
+    });
+
     lrserver.watch([
         __dirname,
         path.join(__dirname,'src')
@@ -44,35 +48,23 @@ else {
     )); 
 }
 
-app.listen(port, () => console.log('aXplain server listening on port ' + port ));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.listen(port, () => {
+    console.log('aXplain server listening on port ' + port )
+});
 
 app.post('/api/getUsers', async function(req, res) {
-    //console.log('req', req.body)
     try {
+        const filter = req.body.filter || []
         const response = await fetch(`http://localhost:${corsproxyPort}/https://woffu-dev.azurewebsites.net/api/v1/users`);
         const json = await response.json();
-        const filter = [
-            'ImageURL',
-            'Acronym',
-            'FirstName',
-            'LastName',
-            'JobTitleId',
-            'DepartmentId',
-            'UserKey',
-            'UsedDays',
-            'AvailableDays',
-            'EmployeeStartDate'
-        ];
-        
         const filtered = json.map(element => {
-            const elementFiltered = filter.reduce((newElement,key) => {
-                newElement[key] = element[key];
-                return newElement;
-            },{});
-            
-            return elementFiltered;
-        },[])
-        console.log('filtered', filtered)
+            return filter.reduce((newElement,key) => {
+                return {...newElement,[key]:element[key]}
+            },{})
+        })
         
         res.json(filtered);
     } 

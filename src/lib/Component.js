@@ -45,7 +45,7 @@ export default class Component {
 
         this._stateListener();
     }
-
+    
     get name() {
         return this._name;
     }
@@ -214,15 +214,21 @@ export default class Component {
     }
     
     _onChangeState() {
-        const newProps = this.stateToprops(state) || null;
+        let force = false;
+        
         const newDomProps = getAllAttributes(this.$clip);
-
-        if (newProps && JSON.stringify(this.props) !== JSON.stringify(newProps) ||
-            newDomProps && JSON.stringify(this.domProps) !== JSON.stringify(newDomProps)) {
+        if(newDomProps && JSON.stringify(this.domProps) !== JSON.stringify(newDomProps)) {
             this.domProps = newDomProps;
-            this.props = newProps;
-            this.forceRender();
+            force = true;
         }
+        
+        const newProps = this.stateToprops(state) || null;
+        if (newProps && JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+            this.props = newProps;
+            force = true;
+        }
+        
+        if(force) this.forceRender();
     }
 
     _setDomEvents($domElement) {
