@@ -17,20 +17,29 @@ export const reducers = {
 }
 
 function setUsers(state, payload) {
+    let minTime, maxTime;
+    
     const usersArr = [...payload];
     const order = usersArr.map(user => user.UserId);
-    
+
     const users = usersArr.reduce((usersObj,user) => {
         const {AvailableDays,UsedDays,EmployeeStartDate} = {...user};
         const _startTime = new Date(EmployeeStartDate).getTime();
+
+        minTime = !minTime ? _startTime : Math.min(minTime,_startTime);
+        maxTime = !maxTime ? _startTime : Math.max(maxTime,_startTime);
+
         const _freeTime = Math.round((UsedDays*100) / ((AvailableDays + UsedDays)||1));
         usersObj[user.UserId] = {...user,_freeTime,_startTime};
+
         return usersObj;
     },{});
     
     return ({
         ...state,
         users,
-        order
+        order,
+        minTime,
+        maxTime
     })
 }
