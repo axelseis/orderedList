@@ -68,9 +68,11 @@ export default class Component {
     }
 
     renderTemplate($domElement, templateTpl) {
-        const templateStr = templateTpl.replace(/(?:\r\n|\r|\n)/g, '')
-                                        .replace(/onload=/g, 'onload_axplain=');
-
+        const templateStr = templateTpl
+        .replace(/(?:\r\n|\r|\n)/g, '')
+        .replace(/(onload|onLoad|onerror|onError)=/g, "$1_event=")
+        //.replace(/()=/g, 'onerror_event=');
+        
         if (!$domElement || !isDOMElement($domElement)) {
             throw new TypeError(`${this.type}: renderTemplate requires a DOMElement and you passed [${$domElement}]`)
         }
@@ -216,15 +218,15 @@ export default class Component {
     _onChangeState() {
         let force = false;
         
-        const newDomProps = getAllAttributes(this.$clip);
-        if(newDomProps && JSON.stringify(this.domProps) !== JSON.stringify(newDomProps)) {
-            this.domProps = newDomProps;
+        const newDomProps = JSON.stringify(getAllAttributes(this.$clip));
+        if(newDomProps && JSON.stringify(this.domProps) !== newDomProps) {
+            this.domProps = JSON.parse(newDomProps);
             force = true;
         }
         
-        const newProps = this.stateToprops(state) || null;
-        if (newProps && JSON.stringify(this.props) !== JSON.stringify(newProps)) {
-            this.props = newProps;
+        const newProps = JSON.stringify(this.stateToprops(state)) || null;
+        if (newProps && JSON.stringify(this.props) !== newProps) {
+            this.props = JSON.parse(newProps);
             force = true;
         }
         
@@ -242,10 +244,10 @@ export default class Component {
                 else if (attr.value != '' && attr.name.indexOf('on') === 0) {
                     const tempFunc = this[attr.value];
                     if (tempFunc) {
-                        if(attr.name.indexOf('_axplain') !== -1){
-                            element.removeAttribute(attr.name)
+                        if(attr.name.indexOf('_event') !== -1){
+                            //element.removeAttribute(attr.name)
                         }
-                        const validEvent = 'on' + mapEvent(attr.name.replace('_axplain','').slice(2));
+                        const validEvent = 'on' + mapEvent(attr.name.replace('_event','').slice(2));
                         element[validEvent] = tempFunc.bind(this)
                     }
                     else {

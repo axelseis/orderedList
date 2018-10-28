@@ -10,6 +10,8 @@ import Header from '../Header/Header.js';
 import Team from '../Team/Team.js';
 
 import { getUsers, reducers } from './actions.js';
+import { reducers as headerReducers } from '../Header/actions.js';
+import { reducers as userReducers } from '../User/actions.js';
 
 const routes = [
     { url: "/" },
@@ -24,7 +26,7 @@ export default class App extends Component {
     }
     
     initApp(){
-        initStore([reducers], initialState);
+        initStore([reducers,headerReducers,userReducers], initialState);
         initRouter(routes, BASE_URL || '');
 
         getUsers();

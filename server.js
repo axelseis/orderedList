@@ -62,7 +62,8 @@ app.post('/api/getUsers', async function(req, res) {
         const json = await response.json();
         const filtered = json.map(element => {
             return filter.reduce((newElement,key) => {
-                return {...newElement,[key]:element[key]}
+                const newKey = !(!element[key] && element[key] !== 0) ? {[key]:  element[key]} : {}
+                return {...newElement,...newKey}
             },{})
         })
         
