@@ -1,19 +1,17 @@
 
 import Component from '../../lib/Component.js'
-import { setFilterSelected } from './actions.js';
+import { sortByOrder, filterByDate } from './actions.js';
 
 export default class Header extends Component {
     constructor(className) {
         super(className);
-
-        this.datePickerIn;
-        this.datePickerOut;
     }
     
     stateToprops(state){
-        const {filters=[],filterSelected,minTime,maxTime} = {...state};
+        const {filters:{order=[],filterSelected,minTime=0,maxTime=0}} = {...state};
+
         return ({
-            filters,
+            orderFilters: order,
             filterSelected,
             minTime,
             maxTime
@@ -24,52 +22,46 @@ export default class Header extends Component {
         ev.stopPropagation();
         
         const filterId = ev.currentTarget.getAttribute('filterId');
-        setFilterSelected(filterId);
+        sortByOrder(filterId);
     }
     
-    onFocusDateInInput(ev) {
-        if(!this.datePickerIn) {
-            this.datePickerIn = flatpickr(this.$dateIn,{
-                dateFormat: 'd/m/Y',
-                minDate: this.props.minTime,
-                maxDate: this.props.maxTime,
-            });
-            this.datePickerIn.open();
-        }
-    }
+    onChangeDateInput(ev) {
+        console.log('ev', ev)
+        const dateIn = this.$dateIn.value;
+        console.log('this.$dateIn', this.$dateIn.value)
+        const dateOut = this.$dateOut.value;
 
-    onFocusDateOutInput(ev) {
-        if(!this.datePickerOut) {
-            this.datePickerOut = flatpickr(this.$dateOut,{
-                dateFormat: 'd/m/Y',
-                minDate: this.props.minTime,
-                maxDate: this.props.maxTime,
-            });
-            this.datePickerOut.open();
-        }
+        filterByDate(dateIn,dateOut)
     }
 
     render() {
+        const minDate = new Date(this.props.minTime).toISOString().slice(0,10);
+        const maxDate = new Date(this.props.maxTime).toISOString().slice(0,10);
+
+        const inputProps = `
+            type="date" 
+            date-format="dd/mm/yyyy"
+            min="${minDate}" 
+            max="${maxDate}"
+        `
 
         return(`
             <div class="Header__logo"></div>
             <div class="Header__filters">
                 <div class="Header__filters__date">
-                    <input 
+                    <input ${inputProps}
                         id="dateIn" 
                         class="Header__date date--in" 
-                        type="text" 
-                        onFocus="onFocusDateInInput">
+                        onChange="onChangeDateInput">
                     </input>
-                    <input 
+                    <input ${inputProps}
                         id="dateOut" 
                         class="Header__date date--out" 
-                        type="text"
-                        onFocus="onFocusDateOutInput">
+                        onChange="onChangeDateInput">
                     </input>
                 </div>
                 <div class="Header__filters__order">
-                    ${this.props.filters.map(filter => {
+                    ${this.props.orderFilters.map(filter => {
                         const selected = filter.id === this.props.filterSelected ? 'property--selected' : '';
                         return(`
                             <div class="Header__order ${selected}" asc="${filter.asc}" filterId="${filter.id}" onClick="onClickOrder">

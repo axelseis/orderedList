@@ -39,7 +39,10 @@ function setUsers(state, payload) {
         ...state,
         users,
         order,
-        minTime,
-        maxTime
+        filters: {
+            ...state.filters,
+            minTime,
+            maxTime
+        }
     })
 }
