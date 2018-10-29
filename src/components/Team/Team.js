@@ -1,13 +1,17 @@
 
 import Component from '../../lib/Component.js'
 import User from '../User/User.js'
-import { dispatchAction } from '../../lib/store.js';
-import { actions as libActions } from '../../lib/actions.js';
+import { setpageIndex, defineScrollbarWidth } from './actions.js';
 
 export default class Team extends Component {
     constructor(className) {
         super(className, [User]);
+        
+        window.addEventListener('resize', () =>  {
+            defineScrollbarWidth(window.innerWidth - this.$clip.clientWidth)
+        })
     }
+    
     
     stateToprops(state){
         const {order=[], App:{perpage=1,page=1}} = {...state}
@@ -24,9 +28,21 @@ export default class Team extends Component {
     
     onClickPageButton(ev){
         const page = ev.currentTarget.getAttribute('pageindex');
-        dispatchAction(libActions.SET_APP_PROP, {
-            page
-        })
+        setpageIndex(page)
+    }
+    
+    onClickPrevButton(ev){
+        const page = ev.currentTarget.getAttribute('pageindex');
+        setpageIndex(Math.max(0,this.props.page-1));
+    }
+    
+    onClickNextButton(ev){
+        const page = ev.currentTarget.getAttribute('pageindex');
+        setpageIndex(Math.min(this.props.maxPages, this.props.page+1));
+    }
+    
+    onEndRender(){
+        defineScrollbarWidth(window.innerWidth - this.$clip.clientWidth)
     }
     
     render() {
@@ -39,14 +55,16 @@ export default class Team extends Component {
                 `).join('')}
             </div>
             <div class="Team__footer">
-                <div class="footer__button button--prev"><</div>
-                ${[...Array(maxPages)].map((x,index) => {
-                    const selected = (index+1) == page ? 'button--selected' : '';
-                    return(`
-                        <div class="footer__button button--page ${selected}" pageindex="${index+1}" onClick="onClickPageButton">${index+1}</div>
-                    `)
-                }).join('')}
-                <div class="footer__button button--next">></div>
+                ${maxPages > 0 ? `
+                    <div class="footer__button button--prev" onClick="onClickPrevButton"><</div>
+                    ${[...Array(maxPages)].map((x,index) => {
+                        const selected = (index+1) == page ? 'button--selected' : '';
+                        return(`
+                            <div class="footer__button button--page ${selected}" pageindex="${index+1}" onClick="onClickPageButton">${index+1}</div>
+                        `)
+                    }).join('')}
+                    <div class="footer__button button--next" onClick="onClickNextButton">></div>
+                ` : ''}
             </div>
         `)
     }

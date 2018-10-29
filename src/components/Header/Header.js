@@ -8,7 +8,9 @@ export default class Header extends Component {
     }
     
     stateToprops(state){
-        const {filters:{order=[],filterSelected,minTime=0,maxTime=0}} = {...state};
+        const {
+            filters: {order=[], filterSelected, minTime=0, maxTime=0}
+        } = {...state};
 
         return ({
             orderFilters: order,
@@ -20,8 +22,8 @@ export default class Header extends Component {
 
     onClickOrder(ev) {
         ev.stopPropagation();
-        
         const filterId = ev.currentTarget.getAttribute('filterId');
+
         sortByOrder(filterId);
     }
     
@@ -65,9 +67,10 @@ export default class Header extends Component {
                 <div class="Header__filters__order">
                     ${this.props.orderFilters.map(filter => {
                         const selected = filter.id === this.props.filterSelected ? 'property--selected' : '';
+                        const icon = !selected ? 'fas fa-sort' : filter.asc ? 'fas fa-sort-up' : 'fas fa-sort-down';
                         return(`
                             <div class="Header__order ${selected}" asc="${filter.asc}" filterId="${filter.id}" onClick="onClickOrder">
-                                ${filter.title}
+                                <span class="order__title">${filter.title}</span> <i class="order__icon ${icon}"></i>
                             </div>
                         `)
                     }).join('')}

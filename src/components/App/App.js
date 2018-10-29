@@ -33,12 +33,20 @@ export default class App extends Component {
     }
 
     stateToprops(state){
+        const {App:{scrollbarWidth}={}} = {...state}
+
         return ({ 
+            scrollbarWidth
         })
     }
 
     render() {
         return(`
+            <style scoped>
+                .Header {
+                    right: ${this.props.scrollbarWidth}
+                }
+            </style>
             <Header class="Header"></Header>
             <Team class="Team"></Team>
         `)

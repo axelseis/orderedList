@@ -13,7 +13,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden; }
 
 .Header {
@@ -22,7 +22,9 @@ body, html {
   box-sizing: border-box;
   top: 0;
   left: 0;
-  right: 16px; }
+  right: 16px;
+  background-color: #F3F2F7;
+  color: #7c7c7c; }
   .Header__logo {
     width: 100%;
     height: 60px;
@@ -50,15 +52,6 @@ body, html {
     flex-direction: column;
     justify-content: space-between;
     font-size: 14px; }
-    .Header__filters:before {
-      content: '';
-      position: absolute;
-      z-index: -1;
-      top: -60px;
-      left: -10px;
-      right: -10px;
-      bottom: 0;
-      background-color: #F3F2F7; }
     .Header__filters__date {
       display: flex;
       flex-direction: row;
@@ -78,47 +71,74 @@ body, html {
       background-color: #F9F9FB;
       display: flex;
       flex-direction: row;
+      font-size: 14px;
       justify-content: space-between;
       align-items: center;
       box-sizing: border-box; }
-  .Header__order:nth-child(1) {
-    flex: 0 2 280px; }
-  .Header__order:nth-child(2) {
-    flex: 0 0 100px;
-    text-align: center; }
-  .Header__order:nth-child(3) {
-    flex: 0 2 260px;
-    text-align: center; }
-  .Header__order:nth-child(4) {
-    flex: 1 1 200px;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+  .Header__order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; }
+    .Header__order:nth-child(1) {
+      flex: 0 2 280px; }
+    .Header__order:nth-child(2) {
+      flex: 0 0 100px;
+      text-align: center; }
+    .Header__order:nth-child(3) {
+      flex: 0 2 260px;
+      text-align: center; }
+    .Header__order:nth-child(4) {
+      flex: 1 1 200px;
+      text-align: center; }
+    .Header__order .order__title {
+      margin-right: 5px; }
+    .Header__order .order__icon {
+      flex: 0 0 10px;
+      opacity: 0.3; }
+    .Header__order.property--selected .order__icon {
+      opacity: 1; }
+  .Header__date {
+    border: solid 1px #ECEDF2;
+    height: 40px;
+    margin-left: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    min-width: 120px;
+    font-size: 14px;
+    color: #d1d1d1; }
 
 .Team {
-  right: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   min-width: 560px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  padding-bottom: 50px; }
   .Team__list {
     position: relative;
     width: 100%;
     max-width: 960px;
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
     margin: 190px auto 0;
     box-sizing: border-box;
     background-color: white;
-    box-shadow: 0px 0px 5px 0px #d1d1d1; }
+    box-shadow: 0px -5px 5px 0px #d1d1d1; }
   .Team__footer {
+    position: relative;
     width: 100%;
+    max-width: 960px;
     height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-top: solid 1px #ECEDF2; }
+    border-top: solid 1px #ECEDF2;
+    background-color: white;
+    margin: 0 auto;
+    box-shadow: 0px 1px 3px 0 #d1d1d1; }
     .Team__footer .footer__button {
       width: 33px;
       height: 35px;
@@ -127,7 +147,8 @@ body, html {
       border: solid 1px #ECEDF2;
       text-align: center;
       color: #2D7FE2;
-      box-sizing: border-box; }
+      box-sizing: border-box;
+      cursor: pointer; }
       .Team__footer .footer__button:nth-child(n+2) {
         border-left: none; }
       .Team__footer .footer__button.button--selected {
@@ -152,14 +173,12 @@ body, html {
     text-align: center; }
   .User > div:nth-child(4) {
     flex: 1 1 200px;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+    text-align: center; }
   .User__info {
     display: flex;
     flex-direction: row;
-    align-items: center; }
+    align-items: center;
+    padding-left: 20px; }
   .User__avatar {
     flex: 0 0 32px;
     height: 32px;
@@ -192,7 +211,9 @@ body, html {
       height: 100%;
       max-width: 150px;
       margin: 0 auto;
-      background-color: #ECEDF2; }
+      background-color: #ECEDF2;
+      border-radius: 2px;
+      overflow: hidden; }
     .User__freeTime .freeTime__out {
       height: 100%;
       background-color: #2D7FE2; }

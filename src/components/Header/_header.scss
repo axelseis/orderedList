@@ -6,6 +6,7 @@
     left: 0;
     right: 16px;
     background-color: $backColor;
+    color: $greyBlack;
     
     &__logo {
         width: 100%;
@@ -63,6 +64,7 @@
             background-color: $greyMedium;
             display: flex;
             flex-direction: row;
+            font-size: 14px;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
@@ -71,5 +73,37 @@
 
     &__order {
         @include flexRow();
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        .order {
+            &__title {
+                margin-right: 5px;
+            }
+            &__icon {
+                flex: 0 0 10px;
+                opacity: 0.3;
+
+            }
+        }
+
+        &.property--selected {
+            .order__icon {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__date {
+        border: solid 1px $grey;
+        height: 40px;
+        margin-left: 10px;
+        padding-left: 10px;
+        box-sizing: border-box;
+        min-width: 120px;
+        font-size: 14px;
+        color: $greyDark;
     }
 }

@@ -8,7 +8,7 @@ export const initialState = {
     filters: {
         dateIn: 0,
         dateOut: 0,
-        filterSelected: 'FirstName',
+        filterSelected: null,
         order: [
             {
                 id: 'FirstName',
