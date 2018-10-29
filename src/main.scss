@@ -4,6 +4,7 @@ $blue: #2D7FE2;
 $grey: #ECEDF2;
 $greyDark: #d1d1d1;
 $greyMedium: #F9F9FB;
+$backColor: #F3F2F7;
 
 $maxW: 960px;
 $minW: 560px;
@@ -34,7 +35,7 @@ body,html {
     min-height: 100%;
     padding: 0;
     margin: 0;
-    background-color: #F3F2F7;
+    background-color: $backColor;
     border-radius: 5px;
 }
 

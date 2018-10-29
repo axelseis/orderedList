@@ -13,16 +13,16 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden; }
 
 .Header {
   position: fixed;
   z-index: 10;
-  background-color: #F3F2F7;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  width: 100%; }
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  right: 16px; }
   .Header__logo {
     width: 100%;
     height: 60px;
@@ -30,11 +30,12 @@ body, html {
     align-items: center;
     justify-content: center;
     background-color: #2D7FE2;
-    background-image: url("/assets/woffu-logo.png");
+    background-image: url("/assets/logo.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 150px; }
   .Header__filters {
+    position: relative;
     user-select: none;
     background-color: #ffffff;
     width: 100%;
@@ -49,6 +50,28 @@ body, html {
     flex-direction: column;
     justify-content: space-between;
     font-size: 14px; }
+    .Header__filters:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: -60px;
+      left: -10px;
+      right: -10px;
+      bottom: 0;
+      background-color: #F3F2F7; }
+    .Header__filters__date {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      height: 60px;
+      padding: 0 25px; }
+      .Header__filters__date .date__title {
+        font-size: 21px;
+        font-weight: 600;
+        margin-right: auto; }
+      .Header__filters__date .date__label {
+        font-size: 16px; }
     .Header__filters__order {
       height: 30px;
       padding: 0 20px;
@@ -74,25 +97,20 @@ body, html {
     text-overflow: ellipsis; }
 
 .Team {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 190px auto 50px;
-  padding: 0 20px;
-  width: 100%;
-  max-width: 960px;
+  right: 16px;
   min-width: 560px;
-  background-color: white;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  box-shadow: 0px 0px 5px 0px #d1d1d1;
   box-sizing: border-box; }
   .Team__list {
+    position: relative;
     width: 100%;
+    max-width: 960px;
     display: flex;
     flex-direction: column;
-    padding: 0 30px; }
+    padding: 0 20px;
+    margin: 190px auto 0;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0px 0px 5px 0px #d1d1d1; }
   .Team__footer {
     width: 100%;
     height: 50px;

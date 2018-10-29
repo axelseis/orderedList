@@ -26,9 +26,7 @@ export default class Header extends Component {
     }
     
     onChangeDateInput(ev) {
-        console.log('ev', ev)
         const dateIn = this.$dateIn.value;
-        console.log('this.$dateIn', this.$dateIn.value)
         const dateOut = this.$dateOut.value;
 
         filterByDate(dateIn,dateOut)
@@ -49,16 +47,20 @@ export default class Header extends Component {
             <div class="Header__logo"></div>
             <div class="Header__filters">
                 <div class="Header__filters__date">
-                    <input ${inputProps}
-                        id="dateIn" 
-                        class="Header__date date--in" 
-                        onChange="onChangeDateInput">
-                    </input>
-                    <input ${inputProps}
-                        id="dateOut" 
-                        class="Header__date date--out" 
-                        onChange="onChangeDateInput">
-                    </input>
+                    <div class="date__title">EQUIPO</div>
+                    <div class="date__label">Filtrar por fecha de incorporación</div>
+                    <div class="date__inputs">
+                        <input ${inputProps}
+                            id="dateIn" 
+                            class="Header__date date--in" 
+                            onChange="onChangeDateInput">
+                        </input>
+                        <input ${inputProps}
+                            id="dateOut" 
+                            class="Header__date date--out" 
+                            onChange="onChangeDateInput">
+                        </input>
+                    </div>    
                 </div>
                 <div class="Header__filters__order">
                     ${this.props.orderFilters.map(filter => {
